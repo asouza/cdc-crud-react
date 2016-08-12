@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import './css/side-menu.css';
 import './css/pure-min.css';
+import $ from "jquery";
 
 class App extends Component {
+
+  componentDidMount() {
+    $.ajax({
+      url: "http://localhost:8080/api/autor",
+      dataType: 'json',
+      success: function(data) {
+        console.log(data);
+      }
+    });
+  }  
+
   render() {
     return (
         <div id="layout">            
