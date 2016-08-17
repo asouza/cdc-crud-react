@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './css/side-menu.css';
 import './css/pure-min.css';
+import CustomInputText from './componentes/CustomInputText'
+import CustomSubmit from './componentes/CustomSubmit'
 import $ from "jquery";
 
 class App extends Component {
@@ -46,22 +48,10 @@ class App extends Component {
             <div className="content" id="content">
               <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned">
-                  <div className="pure-control-group">
-                    <label htmlFor="nome">Nome</label> 
-                    <input id="nome" type="text" name="nome" value=""  />                  
-                  </div>
-                  <div className="pure-control-group">
-                    <label htmlFor="email">Email</label> 
-                    <input id="email" type="email" name="email" value=""  />                  
-                  </div>
-                  <div className="pure-control-group">
-                    <label htmlFor="senha">Email</label> 
-                    <input id="senha" type="password" name="senha"  />                                      
-                  </div>
-                  <div className="pure-control-group">                                  
-                    <label></label> 
-                    <button type="submit" className="pure-button pure-button-primary">Gravar</button>                                    
-                  </div>
+                  <CustomInputText id="nome" name="nome" label="Nome: " type="text" value={this.state.nome} placeholder="Nome do Autor" />
+                  <CustomInputText id="email" name="email" label="Email: " type="text" value={this.state.email} placeholder="Email do Autor"  />
+                  <CustomInputText id="senha" name="senha" label="Senha: " type="password" value={this.state.senha} placeholder="Senha do Autor"/>
+                  <CustomSubmit label="Enviar" />
                 </form>             
 
               </div>  
