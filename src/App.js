@@ -5,13 +5,18 @@ import $ from "jquery";
 
 class App extends Component {
 
+  constructor() {   
+    super(); 
+    this.state = {lista : []};
+  }  
+
   componentDidMount() {
     $.ajax({
       url: "http://localhost:8080/api/autor",
       dataType: 'json',
       success: function(data) {
-        console.log(data);
-      }
+        this.setState({lista: data});
+      }.bind(this)
     });
   }  
 
