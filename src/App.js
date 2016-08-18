@@ -51,8 +51,8 @@ class App extends Component {
       type: 'POST',
       data: JSON.stringify({nome:nome,email:email,senha:senha}),
       success: function(data) {
-        console.log(data);
-      },
+        this.setState({lista:data});
+      }.bind(this),
       error: function(response){
         if(response.status === 400){
           console.log("erro de validacao");
