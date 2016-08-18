@@ -3,7 +3,7 @@ import CustomInputText from './componentes/CustomInputText'
 import CustomSubmit from './componentes/CustomSubmit'
 import React, { Component } from 'react';
 
-export class FormularioAutor extends Component {
+class FormularioAutor extends Component {
 
 	
   constructor() {   
@@ -40,7 +40,7 @@ export class FormularioAutor extends Component {
       type: 'POST',
       data: JSON.stringify({nome:nome,email:email,senha:senha}),
       success: function(data) {
-        this.setState({lista:data});
+        this.props.callback(data);
       }.bind(this),
       error: function(response){
         if(response.status === 400){
@@ -66,23 +66,7 @@ export class FormularioAutor extends Component {
 	}
 }
 
-export class TabelaAutores extends Component {
-
-  constructor() {   
-    super(); 
-    this.state = {lista : []};
-  }  
-
-  componentDidMount() {
-    $.ajax({
-      url: "http://localhost:8080/api/autor/lista",
-      dataType: 'json',
-      success: function(data) {
-        this.setState({lista: data});
-      }.bind(this)
-    });
-  }    
-
+class TabelaAutores extends Component {
 	render(){
          return (<div>            
             <table className="pure-table">
@@ -94,7 +78,7 @@ export class TabelaAutores extends Component {
               </thead>
               <tbody>
                   {
-                    this.state.lista.map(function(autor){
+                    this.props.lista.map(function(autor){
                       return (
                           <tr key={autor.id}>
                             <td>{autor.nome}</td>                
@@ -105,6 +89,36 @@ export class TabelaAutores extends Component {
               </tbody>
             </table> 
           </div>);             		
+	}
+}
+
+export class AutorBox extends Component {
+
+	constructor() {   
+	   super(); 
+	   this.state = {lista : []};
+	   this.atualizaLista = this.atualizaLista.bind(this);
+	}
+
+  componentDidMount() {
+    $.ajax({
+      url: "http://localhost:8080/api/autor/lista",
+      dataType: 'json',
+      success: function(data) {
+        this.setState({lista: data});
+      }.bind(this)
+    });
+  }    	  
+
+  atualizaLista(novaLista) {
+  	this.setState({lista:novaLista});
+  }
+
+	render(){
+		return (<div>
+			<FormularioAutor callback={this.atualizaLista}/>
+			<TabelaAutores lista={this.state.lista}/>
+		</div>);
 	}
 }
 
