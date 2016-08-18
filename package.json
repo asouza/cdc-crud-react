@@ -6,6 +6,7 @@
     "react-scripts": "0.2.1"
   },
   "dependencies": {
+    "pubsub-js": "^1.5.3",
     "react": "^15.2.1",
     "react-dom": "^15.2.1"
   },
