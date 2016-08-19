@@ -3,6 +3,7 @@ import CustomInputText from './componentes/CustomInputText'
 import CustomSubmit from './componentes/CustomSubmit'
 import React, { Component } from 'react';
 import PubSub from 'pubsub-js';
+import TratadorDeErros from './TratadorDeErros'
 
 class FormularioAutor extends Component {
 
@@ -42,10 +43,12 @@ class FormularioAutor extends Component {
       data: JSON.stringify({nome:nome,email:email,senha:senha}),
       success: function(data) {
         PubSub.publish( 'atualiza-lista-autores', data );
-      },
+        PubSub.publish( 'limpa-erros', {});
+        this.setState({nome:'',email:'',senha:''});
+      }.bind(this),
       error: function(response){
         if(response.status === 400){
-          console.log("erro de validacao");
+          new TratadorDeErros().publicaErros(JSON.parse(response.responseText));
         }
       }
     });    
