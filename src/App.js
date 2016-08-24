@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './css/side-menu.css';
 import './css/pure-min.css';
-import {AutorBox} from './Autor'
+import Home from './Home'
 
 class App extends Component {
   render() {
@@ -24,15 +24,8 @@ class App extends Component {
             </div>
 
           <div id="main">
-            <div className="header">
-              <h1>Cadastro de Autores</h1>
-            </div>
-            <div className="content" id="content">
-              <AutorBox/>
-            </div>
+            <Home/>
           </div>            
-
-
         </div>
 
     );
