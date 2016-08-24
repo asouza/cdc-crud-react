@@ -11,23 +11,12 @@ class FormularioAutor extends Component {
   constructor() {   
     super(); 
     this.state = {nome: '', email: '', senha: ''};
-    this.setNome = this.setNome.bind(this);
-    this.setEmail = this.setEmail.bind(this);
-    this.setSenha = this.setSenha.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);    
   }  
 
-  setNome(e) {
-    this.setState({nome: e.target.value});    
+  salvaAlteracao(nomeInput,e) {
+    this.setState({[nomeInput]: e.target.value});
   }
-
-  setEmail(e) {
-    this.setState({email: e.target.value});
-  }
-
-  setSenha(e) {
-    this.setState({senha: e.target.value});
-  }  
 
   handleSubmit(e) {
     e.preventDefault();
@@ -59,9 +48,9 @@ class FormularioAutor extends Component {
 		return (
               <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
-                  <CustomInputText id="nome" name="nome" label="Nome: " type="text" value={this.state.nome} placeholder="Nome do Autor" onChange={this.setNome} />
-                  <CustomInputText id="email" name="email" label="Email: " type="text" value={this.state.email} placeholder="Email do Autor" onChange={this.setEmail} />
-                  <CustomInputText id="senha" name="senha" label="Senha: " type="password" value={this.state.senha} placeholder="Senha do Autor" onChange={this.setSenha}/>
+                  <CustomInputText id="nome" name="nome" label="Nome: " type="text" value={this.state.nome} placeholder="Nome do Autor" onChange={this.salvaAlteracao.bind(this,'nome')} />
+                  <CustomInputText id="email" name="email" label="Email: " type="text" value={this.state.email} placeholder="Email do Autor" onChange={this.salvaAlteracao.bind(this,'email')} />
+                  <CustomInputText id="senha" name="senha" label="Senha: " type="password" value={this.state.senha} placeholder="Senha do Autor" onChange={this.salvaAlteracao.bind(this,'senha')}/>
                   <CustomSubmit label="Enviar" />
                 </form>
 
