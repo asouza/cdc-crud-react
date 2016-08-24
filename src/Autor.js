@@ -96,7 +96,7 @@ class TabelaAutores extends Component {
 	}
 }
 
-export default class AutorBox extends Component {
+export default class AutorAdmin extends Component {
 
 	constructor() {   
 	   super(); 
@@ -105,7 +105,7 @@ export default class AutorBox extends Component {
 
   componentDidMount() {
     $.ajax({
-      url: "http://localhost:8080/api/autor/lista",
+      url: "http://localhost:8080/api/autor",
       dataType: 'json',
       success: function(data) {
         this.setState({lista: data});
