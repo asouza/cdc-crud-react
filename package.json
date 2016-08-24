@@ -3,12 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
+    "react-router": "^2.7.0",
     "react-scripts": "0.2.1"
   },
   "dependencies": {
     "pubsub-js": "^1.5.3",
     "react": "^15.2.1",
-    "react-dom": "^15.2.1"
+    "react-dom": "^15.2.1",
+    "react-router": "^2.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
