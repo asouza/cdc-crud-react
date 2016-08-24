@@ -96,7 +96,7 @@ class TabelaAutores extends Component {
 	}
 }
 
-export class AutorBox extends Component {
+export default class AutorBox extends Component {
 
 	constructor() {   
 	   super(); 
@@ -117,7 +117,7 @@ export class AutorBox extends Component {
 	}.bind(this));    
   }    	  
 
-	render(){
+	render(){    
 		return (<div>
 			<FormularioAutor/>
 			<TabelaAutores lista={this.state.lista}/>

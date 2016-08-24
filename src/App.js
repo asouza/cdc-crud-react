@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './css/side-menu.css';
 import './css/pure-min.css';
-import Home from './Home'
+import { Link } from 'react-router'
 
 class App extends Component {
   render() {
@@ -16,15 +16,15 @@ class App extends Component {
                     <a className="pure-menu-heading" href="#">Company</a>
 
                     <ul className="pure-menu-list">
-                        <li className="pure-menu-item"><a href="#" className="pure-menu-link">Home</a></li>
-                        <li className="pure-menu-item"><a href="#" className="pure-menu-link">Autores</a></li>
-                        <li className="pure-menu-item"><a href="#" className="pure-menu-link">Livros</a></li>
+                        <li className="pure-menu-item"><Link to="/index.html" className="pure-menu-link">Home</Link></li>
+                        <li className="pure-menu-item"><Link to="/autor" className="pure-menu-link">Autores</Link></li>
+                        <li className="pure-menu-item"><Link to="/livro" className="pure-menu-link">Livros</Link></li>
                     </ul>
                 </div>
             </div>
 
           <div id="main">
-            <Home/>
+            {this.props.children}
           </div>            
         </div>
 
