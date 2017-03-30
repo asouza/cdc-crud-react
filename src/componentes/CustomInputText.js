@@ -13,18 +13,25 @@ export default class CustomInputText extends React.Component {
 			<div className="pure-control-group">
 				<label htmlFor={this.props.id}>{this.props.label}</label> 
 				<input {...this.props}/>				
-				<span className="erro" id={"erro-"+this.props.name}>{this.state.msgErro}</span>					
+				<span className="error">{this.state.msgErro}</span>			
 			</div>
 		);
 	}
 
 	componentDidMount() {
-		PubSub.subscribe('erro-validacao-'+this.props.name, function(topicName,msg){			
-			this.setState({msgErro:msg});
+		PubSub.subscribe("erro-validacao",function(topicName,erro){			
+			if(erro.field === this.props.name){
+				this.setState({msgErro:erro.defaultMessage});			
+			}
 		}.bind(this));
 		
 		PubSub.subscribe("limpa-erros", function(topicName,msg){			
 			this.setState({msgErro:""});
 		}.bind(this));
 	}	
+
+	componentWillUnmount() {
+		PubSub.unsubscribe("erro-validacao");
+		PubSub.unsubscribe("limpa-erros");
+	}
 }
