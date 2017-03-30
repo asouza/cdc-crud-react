@@ -42,17 +42,18 @@ class FormularioLivro extends Component {
 			data: JSON.stringify({titulo:titulo,preco:preco,autorId:autorId}),
 			success: function(data) {
 		        PubSub.publish( 'atualiza-lista-livros', data );
-		        PubSub.publish( 'limpa-erros', {});
-			},
+				this.setState({titulo: '', preco: '', autorId: ''});
+			}.bind(this),
 			error: function(response){
 				if(response.status === 400){
 					var tratadorDeErros = new TratadorDeErros();
 					tratadorDeErros.publicaErros(JSON.parse(response.responseText));						
 				}
-			}
+			},
+      		beforeSend: function () {
+        		PubSub.publish("limpa-erros");
+      		}
 		});  
-		
-		this.setState({titulo: '', preco: '', autorId: ''});
 	}
 	
 	render() {
@@ -63,8 +64,9 @@ class FormularioLivro extends Component {
 			<div className="autorForm">
 				<form className="pure-form pure-form-aligned" onSubmit={this.handleLivroSubmit}>
 					<CustomInputText id="titulo" name="titulo" label="Titulo: " type="text" value={this.state.titulo} placeholder="Titulo do livro" onChange={this.setTitulo} />
-					<CustomInputText id="preco" name="preco" label="Preco: " type="decimal" value={this.state.preco} placeholder="Preço do livro" onChange={this.setPreco} />
-					<div className="pure-controls">
+					<CustomInputText id="preco" name="preco" label="Preco: " type="text" value={this.state.preco} placeholder="Preço do livro" onChange={this.setPreco} />
+				    <div className="pure-control-group">
+            			<label htmlFor="autorId">Autor</label>
 						<select value={this.state.autorId} name="autorId" onChange={this.setAutorId}>
 							<option value="">Selecione</option>
 							{autores}
@@ -82,7 +84,7 @@ class TabelaLivros extends Component {
 	render() {
 		var livros = this.props.lista.map(function(livro){
 			return(
-					<tr key={livro.titulo}>
+					<tr key={livro.id}>
 						<td>{livro.titulo}</td>
 						<td>{livro.autor.nome}</td>
 						<td>{livro.preco}</td>
@@ -122,7 +124,7 @@ export default class LivroAdmin extends Component {
 		});
 		
 		$.ajax({
-			url: "http://localhost:8080/api/autor",
+			url: "http://localhost:8080/api/autores",
 			dataType: 'json',
 			success: function(data) {
 				this.setState({autores: data});
@@ -134,6 +136,9 @@ export default class LivroAdmin extends Component {
 		}.bind(this));		
 	}
 
+	componentWillUnmount() {
+		PubSub.unsubscribe("atualiza-lista-livros");
+	}
 
 	render() {
 		return(

@@ -25,20 +25,22 @@ class FormularioAutor extends Component {
     var senha = this.state.senha.trim();    
 
     $.ajax({
-      url: "http://localhost:8080/api/autor",
+      url: "http://localhost:8080/api/autores",
       contentType: 'application/json',
       dataType: 'json',
       type: 'POST',
       data: JSON.stringify({nome:nome,email:email,senha:senha}),
       success: function(data) {
-        PubSub.publish( 'atualiza-lista-autores', data );
-        PubSub.publish( 'limpa-erros', {});
+        PubSub.publish('atualiza-lista-autores', data);
         this.setState({nome:'',email:'',senha:''});
       }.bind(this),
       error: function(response){
         if(response.status === 400){
           new TratadorDeErros().publicaErros(JSON.parse(response.responseText));
         }
+      },
+      beforeSend: function () {
+        PubSub.publish("limpa-erros");
       }
     });    
   }    		
@@ -49,7 +51,7 @@ class FormularioAutor extends Component {
               <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
                   <CustomInputText id="nome" name="nome" label="Nome: " type="text" value={this.state.nome} placeholder="Nome do Autor" onChange={this.salvaAlteracao.bind(this,'nome')} />
-                  <CustomInputText id="email" name="email" label="Email: " type="text" value={this.state.email} placeholder="Email do Autor" onChange={this.salvaAlteracao.bind(this,'email')} />
+                  <CustomInputText id="email" name="email" label="Email: " type="email" value={this.state.email} placeholder="Email do Autor" onChange={this.salvaAlteracao.bind(this,'email')} />
                   <CustomInputText id="senha" name="senha" label="Senha: " type="password" value={this.state.senha} placeholder="Senha do Autor" onChange={this.salvaAlteracao.bind(this,'senha')}/>
                   <CustomSubmit label="Enviar" />
                 </form>
@@ -66,7 +68,7 @@ class TabelaAutores extends Component {
               <thead>
                 <tr>
                   <th>Nome</th>
-                  <th>email</th>
+                  <th>Email</th>
                 </tr>
               </thead>
               <tbody>
@@ -94,7 +96,7 @@ export default class AutorAdmin extends Component {
 
   componentDidMount() {
     $.ajax({
-      url: "http://localhost:8080/api/autor",
+      url: "http://localhost:8080/api/autores",
       dataType: 'json',
       success: function(data) {
         this.setState({lista: data});
@@ -104,13 +106,24 @@ export default class AutorAdmin extends Component {
 	PubSub.subscribe('atualiza-lista-autores', function(topico,novaLista){
 		this.setState({lista:novaLista});
 	}.bind(this));    
-  }    	  
+  }   
+
+  componentWillUnmount() {
+		PubSub.unsubscribe("atualiza-lista-autores");
+	}   	  
 
 	render(){    
-		return (<div>
-			<FormularioAutor/>
-			<TabelaAutores lista={this.state.lista}/>
-		</div>);
+		return (
+      <div>
+        <div className="header">
+          <h1>Cadastro de Autores</h1>
+        </div>
+        <div className="content" id="content">
+          <FormularioAutor />
+          <TabelaAutores lista={this.state.lista} />
+        </div>
+      </div>
+    );
 	}
 }
 

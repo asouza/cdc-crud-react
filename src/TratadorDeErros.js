@@ -6,7 +6,7 @@ export default class TratadorDeErros {
 		var erros = objeto.errors;
 		for(var index in erros){				
 			var erro = erros[index];				
-			PubSub.publish("erro-validacao-"+erro.field,erro.defaultMessage);
+			PubSub.publish("erro-validacao",erro);
 		}		
 	}
 }
